@@ -1,0 +1,93 @@
+---
+interface TestCase {
+  title: string;
+  type: "success" | "failure" | "warning";
+  steps: string[];
+  expected: string;
+  actual?: string;
+}
+
+const testCases: TestCase[] = [
+  {
+    title: "User Login - Happy Path",
+    type: "success",
+    steps: [
+      "Given a registered user",
+      "When they enter valid email and password",
+      "Then they should be redirected to their dashboard",
+    ],
+    expected: "User is successfully logged in and redirected to dashboard",
+  },
+  {
+    title: "User Login - Invalid Password",
+    type: "failure",
+    steps: [
+      "Given a registered user",
+      "When they enter a valid email and wrong password",
+      "Then they should see an error message",
+    ],
+    expected: "User sees error message: 'Incorrect password'",
+    actual: "User is logged in despite wrong password",
+  },
+];
+---
+
+<section
+  id="test-cases"
+  class="py-12 border-t border-[#ffffff10] text-[var(--white)]"
+>
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-lg text-[var(--sec)] mb-2 shiny-sec">Quality Assurance</h2>
+    <h3 class="text-4xl md:text-5xl font-medium mb-8">Test Cases</h3>
+
+    <div class="grid grid-cols-1 gap-8">
+      {
+        testCases.map((testCase) => (
+          <div class="p-6 rounded-xl bg-[#1414149c] border border-[var(--white-icon-tr)]">
+            <div class="flex items-center gap-4 mb-4">
+              <h4 class="text-2xl font-semibold">{testCase.title}</h4>
+              <span
+                class={`px-3 py-1 rounded-full text-sm ${
+                  testCase.type === "success"
+                    ? "bg-[var(--test-pass)]"
+                    : testCase.type === "failure"
+                      ? "bg-[var(--test-fail)]"
+                      : "bg-[var(--test-warning)]"
+                }`}
+              >
+                {testCase.type === "success"
+                  ? "✅ Pass"
+                  : testCase.type === "failure"
+                    ? "❌ Fail"
+                    : "⚠️ Warning"}
+              </span>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <h5 class="text-lg font-medium mb-2">Steps:</h5>
+                <ul class="list-disc list-inside space-y-2 text-[var(--white-icon)]">
+                  {testCase.steps.map((step) => (
+                    <li>{step}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h5 class="text-lg font-medium mb-2">Expected Result:</h5>
+                <p class="text-[var(--white-icon)]">{testCase.expected}</p>
+              </div>
+
+              {testCase.actual && (
+                <div>
+                  <h5 class="text-lg font-medium mb-2">Actual Result:</h5>
+                  <p class="text-[var(--white-icon)]">{testCase.actual}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
